@@ -1,0 +1,88 @@
+[INFO] [2025-12-12 13:31:56.728] : 截图保存：D:\pythonProject\Pytest_allure_2\log\image_allure\用例失败_test_login[login02]_20251212133155.png -> attach_failure_screenshot line:68
+[INFO] [2025-12-12 13:32:07.346] : 截图保存：D:\pythonProject\Pytest_allure_2\log\image_allure\用例失败_test_login[login03]_20251212133206.png -> attach_failure_screenshot line:68
+[INFO] [2025-12-12 14:14:50.972] : 截图保存：D:\pythonProject\Pytest_allure_2\log\image_allure\用例失败_test_shopping_01_20251212141450.png -> attach_failure_screenshot line:68
+[INFO] [2025-12-12 14:16:26.257] : 截图保存：D:\pythonProject\Pytest_allure_2\log\image_allure\用例失败_test_shopping_01_20251212141625.png -> attach_failure_screenshot line:68
+[ERROR] [2025-12-12 14:22:33.840] : 元素定位超时（10秒）：('xpath', "//span[contains(@class, 'user-name')]") -> assert_text_in_element line:50
+[INFO] [2025-12-12 14:22:34.996] : 截图保存：D:\pythonProject\Pytest_allure_2\log\image_allure\用例失败_test_shopping_01_20251212142234.png -> attach_failure_screenshot line:68
+[ERROR] [2025-12-12 14:53:08.813] : ❌ 用例「账号错误」执行失败：未匹配到对应的断言场景，预期结果：顾客编号格式 -> test_login line:97
+[INFO] [2025-12-12 14:53:08.813] : 🔄 用例「账号错误」执行完成，重置页面 -> test_login line:102
+[INFO] [2025-12-12 14:53:10.228] : 截图保存：D:\pythonProject\Pytest_allure_2\log\image_allure\用例失败_test_login[login01]_20251212145309.png -> attach_failure_screenshot line:68
+[ERROR] [2025-12-12 14:53:25.404] : ❌ 用例「密码正确」执行失败：未匹配到对应的断言场景，预期结果：何思宇 -> test_login line:97
+[INFO] [2025-12-12 14:53:25.405] : 🔄 用例「密码正确」执行完成，重置页面 -> test_login line:102
+[INFO] [2025-12-12 14:53:25.648] : 截图保存：D:\pythonProject\Pytest_allure_2\log\image_allure\用例失败_test_login[login02]_20251212145325.png -> attach_failure_screenshot line:68
+[ERROR] [2025-12-12 14:53:34.648] : ❌ 用例「密码错误」执行失败：未匹配到对应的断言场景，预期结果：不能为空 (Password is missing) -> test_login line:97
+[INFO] [2025-12-12 14:53:34.649] : 🔄 用例「密码错误」执行完成，重置页面 -> test_login line:102
+[INFO] [2025-12-12 14:53:35.682] : 截图保存：D:\pythonProject\Pytest_allure_2\log\image_allure\用例失败_test_login[login03]_20251212145334.png -> attach_failure_screenshot line:68
+[ERROR] [2025-12-12 14:55:27.167] : 断言失败：预期包含：顾客编号格式不正确(Invalid PC ID) | 实际：登录(Login) | 定位符：('xpath', "//span[contains(text(),'登录(Login)')]") -> assert_text_in_element line:53
+[ERROR] [2025-12-12 14:55:28.045] : ❌ 用例「账号错误」执行失败：预期包含：顾客编号格式不正确(Invalid PC ID) | 实际：登录(Login) | 定位符：('xpath', "//span[contains(text(),'登录(Login)')]") -> test_login line:97
+[INFO] [2025-12-12 14:55:28.045] : 🔄 用例「账号错误」执行完成，重置页面 -> test_login line:102
+[INFO] [2025-12-12 14:55:29.231] : 截图保存：D:\pythonProject\Pytest_allure_2\log\image_allure\用例失败_test_login[login01]_20251212145528.png -> attach_failure_screenshot line:68
+[ERROR] [2025-12-12 14:56:17.363] : 断言失败：预期包含：何思宇 (60003152) | 实际：退出登录(Log out) | 定位符：('xpath', "//span[contains(text(),'退出登录(Log out)')]") -> assert_text_in_element line:53
+[ERROR] [2025-12-12 14:56:17.634] : ❌ 用例「密码正确」执行失败：预期包含：何思宇 (60003152) | 实际：退出登录(Log out) | 定位符：('xpath', "//span[contains(text(),'退出登录(Log out)')]") -> test_login line:97
+[INFO] [2025-12-12 14:56:17.634] : 🔄 用例「密码正确」执行完成，重置页面 -> test_login line:102
+[INFO] [2025-12-12 14:56:17.913] : 截图保存：D:\pythonProject\Pytest_allure_2\log\image_allure\用例失败_test_login[login02]_20251212145617.png -> attach_failure_screenshot line:68
+[ERROR] [2025-12-12 14:56:39.537] : 断言异常：('Connection aborted.', ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None)) -> assert_text_in_element line:56
+[INFO] [2025-12-12 14:56:55.875] : 🔄 用例「密码错误」执行完成，重置页面 -> test_login line:102
+[ERROR] [2025-12-12 14:57:28.555] : 截图失败：HTTPConnectionPool(host='localhost', port=65343): Max retries exceeded with url: /session/6cec2ee618a4dfeace057c6121fdbdff/screenshot (Caused by NewConnectionError("HTTPConnection(host='localhost', port=65343): Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。")) -> attach_failure_screenshot line:70
+[ERROR] [2025-12-12 14:59:41.314] : 断言失败：预期包含：顾客编号格式不正确(Invalid PC ID) | 实际：登录(Login) | 定位符：('xpath', "//span[contains(text(),'登录(Login)')]") -> assert_text_in_element line:53
+[ERROR] [2025-12-12 14:59:42.162] : ❌ 用例「账号错误」执行失败：预期包含：顾客编号格式不正确(Invalid PC ID) | 实际：登录(Login) | 定位符：('xpath', "//span[contains(text(),'登录(Login)')]") -> test_login line:103
+[INFO] [2025-12-12 14:59:43.176] : 截图保存：D:\pythonProject\Pytest_allure_2\log\image_allure\用例失败_test_login[login01]_20251212145942.png -> attach_failure_screenshot line:68
+[ERROR] [2025-12-12 14:59:52.228] : 断言失败：预期包含：何思宇 (60003152) | 实际：退出登录(Log out) | 定位符：('xpath', "//span[contains(text(),'退出登录(Log out)')]") -> assert_text_in_element line:53
+[ERROR] [2025-12-12 14:59:52.421] : ❌ 用例「密码正确」执行失败：预期包含：何思宇 (60003152) | 实际：退出登录(Log out) | 定位符：('xpath', "//span[contains(text(),'退出登录(Log out)')]") -> test_login line:103
+[INFO] [2025-12-12 14:59:52.574] : 截图保存：D:\pythonProject\Pytest_allure_2\log\image_allure\用例失败_test_login[login02]_20251212145952.png -> attach_failure_screenshot line:68
+[INFO] [2025-12-12 15:00:02.048] : ✅ 用例「密码错误」断言通过（密码为空场景） -> test_login line:90
+[INFO] [2025-12-12 15:04:09.550] : ✅ 用例「账号错误」断言通过（顾客编号格式错误场景） -> test_login line:64
+[ERROR] [2025-12-12 15:04:33.214] : 断言异常：('Connection aborted.', ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None)) -> assert_text_in_element line:56
+[ERROR] [2025-12-12 15:05:06.189] : 截图失败：HTTPConnectionPool(host='localhost', port=51130): Max retries exceeded with url: /session/24c921306cc841714902fb6270eb65d2/screenshot (Caused by NewConnectionError("HTTPConnection(host='localhost', port=51130): Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。")) -> attach_failure_screenshot line:70
+[INFO] [2025-12-12 15:05:30.664] : ✅ 用例「密码错误」断言通过（密码为空场景） -> test_login line:94
+[INFO] [2025-12-12 15:07:15.584] : ✅ 用例「账号错误」断言通过（顾客编号格式错误场景） -> test_login line:64
+[ERROR] [2025-12-12 15:07:34.273] : 元素定位超时（10秒）：('xpath', "//span[contains(text(),'何思宇\xa0(60003152)')]") -> assert_text_in_element line:50
+[ERROR] [2025-12-12 15:07:35.638] : ❌ 用例「密码正确」执行失败：元素定位超时（10秒）：('xpath', "//span[contains(text(),'何思宇\xa0(60003152)')]") -> test_login line:106
+[INFO] [2025-12-12 15:07:37.214] : 截图保存：D:\pythonProject\Pytest_allure_2\log\image_allure\用例失败_test_login[login02]_20251212150735.png -> attach_failure_screenshot line:68
+[INFO] [2025-12-12 15:07:47.038] : ✅ 用例「密码错误」断言通过（密码为空场景） -> test_login line:94
+[INFO] [2025-12-12 15:09:20.227] : ✅ 用例「账号错误」断言通过（顾客编号格式错误场景） -> test_login line:64
+[INFO] [2025-12-12 15:09:29.150] : ✅ 用例「密码正确」断言通过（登录成功场景） -> test_login line:79
+[INFO] [2025-12-12 15:09:37.521] : ✅ 用例「密码错误」断言通过（密码为空场景） -> test_login line:93
+[INFO] [2025-12-12 15:11:31.789] : ✅ 用例「账号错误」断言通过（顾客编号格式错误场景） -> test_login line:64
+[INFO] [2025-12-12 15:11:33.694] : ✅ 用例「密码正确」断言通过（登录成功场景） -> test_login line:79
+[INFO] [2025-12-12 15:11:36.403] : ✅ 用例「密码错误」断言通过（密码为空场景） -> test_login line:93
+[INFO] [2025-12-12 15:13:14.718] : ✅ 用例「账号错误」断言通过（顾客编号格式错误场景） -> test_login line:64
+[INFO] [2025-12-12 15:13:16.426] : ✅ 用例「密码正确」断言通过（登录成功场景） -> test_login line:79
+[INFO] [2025-12-12 15:13:19.088] : ✅ 用例「密码错误」断言通过（密码为空场景） -> test_login line:93
+[INFO] [2025-12-12 15:17:56.931] : ✅ 用例「账号错误」断言通过（顾客编号格式错误场景） -> test_login line:64
+[INFO] [2025-12-12 15:17:58.893] : ✅ 用例「密码正确」断言通过（登录成功场景） -> test_login line:79
+[INFO] [2025-12-12 15:18:01.602] : ✅ 用例「密码错误」断言通过（密码为空场景） -> test_login line:93
+[INFO] [2025-12-12 15:18:31.675] : ✅ 用例「账号错误」断言通过（顾客编号格式错误场景） -> test_login line:64
+[INFO] [2025-12-12 15:18:33.695] : ✅ 用例「密码正确」断言通过（登录成功场景） -> test_login line:79
+[INFO] [2025-12-12 15:18:37.033] : ✅ 用例「密码错误」断言通过（密码为空场景） -> test_login line:93
+[INFO] [2025-12-12 15:19:16.395] : ✅ 用例「账号错误」断言通过（顾客编号格式错误场景） -> test_login line:64
+[INFO] [2025-12-12 15:19:18.207] : ✅ 用例「密码正确」断言通过（登录成功场景） -> test_login line:79
+[INFO] [2025-12-12 15:19:20.681] : ✅ 用例「密码错误」断言通过（密码为空场景） -> test_login line:93
+[INFO] [2025-12-12 15:20:00.311] : ✅ 用例「账号错误」断言通过（顾客编号格式错误场景） -> test_login line:64
+[INFO] [2025-12-12 15:20:02.062] : ✅ 用例「密码正确」断言通过（登录成功场景） -> test_login line:79
+[INFO] [2025-12-12 15:20:05.461] : ✅ 用例「密码错误」断言通过（密码为空场景） -> test_login line:93
+[INFO] [2025-12-12 15:25:49.892] : ✅ 用例「账号错误」断言通过（顾客编号格式错误场景） -> test_login line:64
+[INFO] [2025-12-12 15:25:51.714] : ✅ 用例「密码正确」断言通过（登录成功场景） -> test_login line:79
+[INFO] [2025-12-12 15:25:54.124] : ✅ 用例「密码错误」断言通过（密码为空场景） -> test_login line:93
+[INFO] [2025-12-12 15:31:03.258] : ✅ 用例「账号错误」断言通过（顾客编号格式错误场景） -> test_login line:64
+[INFO] [2025-12-12 15:31:05.195] : ✅ 用例「密码正确」断言通过（登录成功场景） -> test_login line:79
+[INFO] [2025-12-12 15:31:08.198] : ✅ 用例「密码错误」断言通过（密码为空场景） -> test_login line:93
+[INFO] [2025-12-12 15:37:02.700] : ✅ 用例「账号错误」断言通过（顾客编号格式错误场景） -> test_login line:64
+[INFO] [2025-12-12 15:37:04.401] : ✅ 用例「密码正确」断言通过（登录成功场景） -> test_login line:79
+[INFO] [2025-12-12 15:37:06.825] : ✅ 用例「密码错误」断言通过（密码为空场景） -> test_login line:93
+[INFO] [2025-12-12 15:41:12.462] : ✅ 用例「账号错误」断言通过（顾客编号格式错误场景） -> test_login line:64
+[INFO] [2025-12-12 15:41:14.471] : ✅ 用例「密码正确」断言通过（登录成功场景） -> test_login line:79
+[INFO] [2025-12-12 15:41:18.762] : ✅ 用例「密码错误」断言通过（密码为空场景） -> test_login line:93
+[ERROR] [2025-12-12 15:41:24.398] : 断言失败：预期包含：测试 | 实际：何思宇 (60003152) | 定位符：('xpath', "//span[contains(text(),'何思宇\xa0(60003152)')]") -> assert_text_in_element line:53
+[INFO] [2025-12-12 15:41:24.738] : 截图保存：D:\pythonProject\Pytest_allure_2\log\image_allure\用例失败_test_shopping_01_20251212154124.png -> attach_failure_screenshot line:68
+[ERROR] [2025-12-12 17:10:03.305] : 断言失败：预期包含：测试 | 实际：何思宇 (60003152) | 定位符：('xpath', "//span[contains(text(),'何思宇\xa0(60003152)')]") -> assert_text_in_element line:53
+[INFO] [2025-12-12 17:10:03.702] : 截图保存：D:\pythonProject\Pytest_allure_2\log\image_allure\用例失败_test_shopping_01_20251212171003.png -> attach_failure_screenshot line:68
+[ERROR] [2025-12-12 17:12:30.821] : 断言失败：预期包含：测试 | 实际：何思宇 (60003152) | 定位符：('xpath', "//span[contains(text(),'何思宇\xa0(60003152)')]") -> assert_text_in_element line:53
+[INFO] [2025-12-12 17:12:31.150] : 截图保存：D:\pythonProject\Pytest_allure_2\log\image_allure\用例失败_test_shopping_01_20251212171230.png -> attach_failure_screenshot line:68
+[ERROR] [2025-12-12 17:14:39.817] : 断言失败：预期包含：测试 | 实际：何思宇 (60003152) | 定位符：('xpath', "//span[contains(text(),'何思宇\xa0(60003152)')]") -> assert_text_in_element line:53
+[INFO] [2025-12-12 17:14:40.208] : 截图保存：D:\pythonProject\Pytest_allure_2\log\image_allure\用例失败_test_shopping_01_20251212171440.png -> attach_failure_screenshot line:68
+[INFO] [2025-12-12 17:18:45.310] : ✅ 用例「账号错误」断言通过（顾客编号格式错误场景） -> test_login line:64
+[INFO] [2025-12-12 17:18:47.109] : ✅ 用例「密码正确」断言通过（登录成功场景） -> test_login line:79
+[INFO] [2025-12-12 17:18:49.531] : ✅ 用例「密码错误」断言通过（密码为空场景） -> test_login line:93
+[ERROR] [2025-12-12 17:18:56.608] : 断言失败：预期包含：测试 | 实际：何思宇 (60003152) | 定位符：('xpath', "//span[contains(text(),'何思宇\xa0(60003152)')]") -> assert_text_in_element line:53
+[INFO] [2025-12-12 17:18:57.170] : 截图保存：D:\pythonProject\Pytest_allure_2\log\image_allure\用例失败_test_shopping_01_20251212171856.png -> attach_failure_screenshot line:68

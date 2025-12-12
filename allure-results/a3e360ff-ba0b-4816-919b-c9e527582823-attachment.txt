@@ -1,0 +1,1 @@
+ERROR    auto_test:base.py:53 断言失败：预期包含：测试 | 实际：何思宇 (60003152) | 定位符：('xpath', "//span[contains(text(),'何思宇\xa0(60003152)')]")
