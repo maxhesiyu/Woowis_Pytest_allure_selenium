@@ -14,18 +14,6 @@ from po.event import myo_login
 @pytest.fixture(scope='class')  # 与用例的function级别匹配
 def open_page():
     """未登录的浏览器实例（修复：确保fixture能正常返回driver）"""
-    # option = webdriver.EdgeOptions()
-    # option.add_experimental_option("detach", True)
-    # # 实例化浏览器选项，并将配置浏览器选项
-    # global driver
-    # driver = webdriver.Edge(options=option)
-    # driver.get(ENV.URL)
-    # # 窗口最大化
-    # driver.maximize_window()
-    # driver.implicitly_wait(10)  # 隐式等待，10秒内页面元素加载完成后立即执行
-    # yield driver
-    # driver.quit()
-    # print("关闭浏览器")
     global driver
     try:
         option = webdriver.EdgeOptions()
@@ -40,8 +28,8 @@ def open_page():
     except Exception as e:
         print(f"❌ open_page fixture 失败：{e}")
         raise
-    finally:
-        driver.quit()
+    # finally:
+    #     driver.quit()
 
 
 # ========== 核心Fixture：DengLu（已登录的浏览器） ==========

@@ -1,4 +1,5 @@
 import os
+import random
 from pathlib import Path
 
 # 项目根目录
@@ -23,9 +24,24 @@ EMAIL_CONFIG = {
 
 # 测试环境配置（统一账号，解决元素定位失败）
 class ENV:
-    URL = "https://cvoqa.doterra.cn/vo/index.html#/home"
-    name = "60003152"  # 与Excel中密码正确账号一致
+    URL = "https://cvoqa.doterra.cn/vo/index.html#/home"   #测试环境订购网址
+    pcno = "60003152"
     password = "123"
+    phone = "13345238446"  #固定手机号
+    randomPhone = f"133{''.join(random.choices('0123456789', k=8))}"   #生成随机手机号
+    CAPTCHA = "1065"  #验证码
+    referrer = "00000002"  #注册推荐人
+    # 注册个人信息默认数据
+    name = "max测试"   #姓名
+    npwd = "a1234567"  #密码
+    ncpwd = "a1234567"  #确认密码
+    randomSFZ = f"a{''.join(random.choices('0123456789abcdefghijklmiopqzx', k=13))}"
+
+
+# 测试小样
+if __name__ == "__main__":
+    var = ENV().randomSFZ
+    print(var)
 
 # 创建必要目录
 for dir_path in [LOG_DIR, ALLURE_IMG_DIR, ALLURE_RESULTS]:
