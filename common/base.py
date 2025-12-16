@@ -56,9 +56,7 @@ def refresh_when_element_appears(driver, target_locator,core_element_loc, wait_t
         wait = WebDriverWait(driver, wait_timeout)
         wait.until(EC.presence_of_element_located(target_locator))  # 推荐用presence（更广的触发条件）
         # wait.until(EC.visibility_of_element_located(target_locator))  # 仅元素可见时触发
-
         print(f"检测到元素 {target_locator} 出现，执行页面刷新")
-
         # 2. 执行刷新（可选普通/强制刷新）
         if refresh_type == "force":
             # 强制刷新（忽略缓存，推荐页面异常时用）
@@ -66,11 +64,9 @@ def refresh_when_element_appears(driver, target_locator,core_element_loc, wait_t
         else:
             # 普通刷新（等效F5，默认）
             driver.refresh()
-
         # 3. 刷新后等待核心元素加载（避免后续操作失效）
         # 【关键】替换为你页面的核心元素，确保刷新后页面可用
         WebDriverWait(driver, 15).until(EC.element_to_be_clickable(core_element_loc))
-
         return True
 
     except TimeoutException:
