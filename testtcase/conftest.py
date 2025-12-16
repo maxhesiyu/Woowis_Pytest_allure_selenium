@@ -21,9 +21,8 @@ def open_page():
         option.add_experimental_option("detach", False)
         option.add_experimental_option("excludeSwitches", ["enable-automation"])  # 避免浏览器提示自动化
         driver = webdriver.Edge(options=option)
-        driver.get(ENV.URL)  # 硬编码URL，避免配置错误
+        driver.get(ENV.URL)
         driver.maximize_window()
-        driver.implicitly_wait(5)
         yield driver  # 返回driver给用例
     except Exception as e:
         print(f"❌ open_page fixture 失败：{e}")

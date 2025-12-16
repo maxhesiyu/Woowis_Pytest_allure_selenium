@@ -9,7 +9,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support import wait
 
-from common.base import sel_end_keys, sel_click, assert_text_in_element
+from common.base import sel_end_keys, sel_click, assert_text_in_element, refresh_when_element_appears
 from common.log import log
 from config.config import ENV
 
@@ -127,14 +127,10 @@ class TestLongin:
             sel_click(driver,(By.XPATH,"//div[contains(text(),'申请优惠顾客')]"))
             allure.dynamic.title("弹窗同意注册提示")
             # 弹窗同意注册提示
-            sleep(1)
             sel_click(driver, (By.XPATH, "//span[contains(text(),'我理解并同意以下全部内容')]"))
-            sleep(1)
             sel_click(driver,(By.XPATH,"//button[@class='button confirm ivu-btn ivu-btn-primary']"))
             allure.dynamic.title("手机号填写")
-            sleep(1)
             sel_end_keys(driver, (By.XPATH, "//body/div[@id='app']/div[@class='root-content']/div[@id='root']/div[@class='container createAccount']/div[@class='content']/section/form[@class='ivu-form ivu-form-label-top']/div[@class='c-form-item ivu-form-item ivu-form-item-required']/div[@class='ivu-form-item-content']/div[@class='ivu-input-wrapper ivu-input-wrapper-large ivu-input-type']/input[1]"),ENV.randomPhone)
-            sleep(1)
             allure.dynamic.title("验证码填写")
             sel_end_keys(driver, (By.XPATH, "//div[@class='yzmInput ivu-col ivu-col-span-11']//input[@type='text']"),ENV.CAPTCHA)
             allure.dynamic.title("朋友号填写")
@@ -153,7 +149,7 @@ class TestLongin:
             sel_end_keys(driver, (By.XPATH, "//div[@class='passwordlabel ivu-form-item ivu-form-item-required']//input[@type='password']"), ENV.npwd)
             sel_end_keys(driver, (By.XPATH, "//div[@class='ivu-form-item ivu-form-item-required']//input[@type='password']"),ENV.ncpwd)
             allure.dynamic.title("国外身份证填写")
-            sleep(1)
+            sleep(2)
             sel_click(driver, (By.XPATH, "//label[contains(text(),'其它国籍（地区）身份证件')]"))
             sel_end_keys(driver, (By.XPATH, "//div[@class='ivu-form-item']//div[@class='ivu-input-wrapper ivu-input-wrapper-large ivu-input-type']//input[@type='text']"),ENV.randomSFZ)
             allure.dynamic.title("日历选择日期")
@@ -170,8 +166,13 @@ class TestLongin:
             allure.dynamic.title("勾选优惠顾客政策并点击申请优惠注册按钮")
             sleep(1)
             sel_click(driver, (By.XPATH, "//a[contains(text(),'优惠顾客政策(Preferential customer policy)')]"))
+            sleep(1)
             sel_click(driver, (By.XPATH, "//button[@class='goon-btn ivu-btn ivu-btn-primary ivu-btn-large']"))
             sel_click(driver, (By.XPATH, "//button[@class='gobtn ivu-btn ivu-btn-primary ivu-btn-large']"))
+            sel_click(driver, (By.XPATH, "//span[contains(text(),'开始购物')]"))
+            refresh_when_element_appears(driver,(By.XPATH, "//i[@class='ivu-icon ivu-icon-ios-close-circle-outline']"),
+                                         (By.XPATH, "//input[@placeholder='搜索(Search)']"))
+
 
 
 

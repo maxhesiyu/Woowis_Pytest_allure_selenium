@@ -39,6 +39,47 @@ def get_text(driver, locator, timeout=10):
         log.error(f"获取文本失败：{locator} → {e}")
         return ""
 
+@allure.step('等待指定元素出现后刷新页面')
+def refresh_when_element_appears(driver, target_locator,core_element_loc, wait_timeout=15, refresh_type="normal"):
+    """
+    检测到目标元素出现后刷新页面
+    :param driver: 浏览器驱动对象
+    :param target_locator: 目标元素定位符（元组），如 (By.XPATH, "//div[@class='error']")
+    :param core_element_loc: 刷新后等待核心元素加载【关键】页面的核心元素，确保刷新后页面可用
+    :param wait_timeout: 等待元素出现的超时时间（秒）
+    :param refresh_type: 刷新类型（normal=普通刷新，force=强制刷新）
+    :return: 布尔值（True=元素出现并刷新，False=元素未出现）
+    """
+    try:
+        # 1. 显式等待目标元素出现（可选：presence/visibility，按需选择）
+        # presence：元素存在于DOM（不可见也会触发）；visibility：元素可见才触发
+        wait = WebDriverWait(driver, wait_timeout)
+        wait.until(EC.presence_of_element_located(target_locator))  # 推荐用presence（更广的触发条件）
+        # wait.until(EC.visibility_of_element_located(target_locator))  # 仅元素可见时触发
+
+        print(f"检测到元素 {target_locator} 出现，执行页面刷新")
+
+        # 2. 执行刷新（可选普通/强制刷新）
+        if refresh_type == "force":
+            # 强制刷新（忽略缓存，推荐页面异常时用）
+            driver.execute_script("location.reload(true);")
+        else:
+            # 普通刷新（等效F5，默认）
+            driver.refresh()
+
+        # 3. 刷新后等待核心元素加载（避免后续操作失效）
+        # 【关键】替换为你页面的核心元素，确保刷新后页面可用
+        WebDriverWait(driver, 15).until(EC.element_to_be_clickable(core_element_loc))
+
+        return True
+
+    except TimeoutException:
+        # 超时未检测到元素，不刷新
+        print(f"超时 {wait_timeout} 秒未检测到元素 {target_locator}，不刷新")
+        return False
+
+
+
 
 # ========== 断言封装（修复文本获取错误） ==========
 @allure.step('断言文字存在于元素中')
