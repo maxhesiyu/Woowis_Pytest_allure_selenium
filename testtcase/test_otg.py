@@ -1,4 +1,5 @@
 from pathlib import Path
+
 from time import sleep
 
 import allure
@@ -6,11 +7,15 @@ import pytest
 from openpyxl.reader.excel import load_workbook
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
-
-from common.base import sel_end_keys, sel_click, assert_text_in_element, refresh_when_element_appears
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import config.config
+from common.base import sel_end_keys, sel_click, assert_text_in_element, refresh_when_element_appears, sel_hover, \
+    redirect_URL
 from common.log import log
 from config.config import ENV
 from po.event import ZhuCe
+from po.shopping import  Shopping_downOrder, Shopping_querySku
 
 # 新增：获取项目根目录（适配任意执行路径）
 PROJECT_ROOT = Path(__file__).parent.parent.absolute()
@@ -109,7 +114,7 @@ class TestLongin:
 
 
     @allure.story('用户登录')
-    def test_shopping_01(self, DengLu):
+    def test_login_01(self, DengLu):
         """修复：简化断言，确保能执行"""
         with allure.step("断言结果故意错误"):
             driver = DengLu
@@ -122,6 +127,31 @@ class TestLongin:
         driver = open_page
         ZhuCe(driver,ENV.randomPhone,ENV.CAPTCHA,ENV.referrer,ENV.name,ENV.npwd,ENV.ncpwd,ENV.randomSFZ)
 
+
+
+
+    @allure.story('用户下单流程')
+    def test_shopping_01(self,DengLu):
+        driver = DengLu
+        sleep(1)
+        # 防止点数弹窗拦截把点击订购的按钮拦截掉
+        refresh_when_element_appears(driver,(By.XPATH, "//span[contains(text(),'确定')]"),(By.XPATH, "//span[@class='main zh'][contains(text(),'在线订购')]"))
+        # 重定向URL
+        redirect_URL(driver,"order/product")
+        # 3. 重定向后操作元素
+        with allure.step("点击产品选项,进行产品加入购物车"):
+            sel_click(driver, (By.XPATH, "//a[@class='top-link']//span[@class='zh'][contains(text(),'产品')]"))
+        with allure.step("自定义加购循环次数"):
+            for i in range(ENV.BOGOSKUTime):
+               Shopping_querySku(driver,ENV.BOGOSKU)
+        with allure.step("导入结算流程方法"):
+            Shopping_downOrder(driver)
+
+
+    # 半成品，方法组合成流程
+    def test_zhuCeAndtest_shopping_01(self, open_page,DengLu):
+        self.test_ZhuCe_01(open_page)
+        self.test_shopping_01(DengLu)
 
 
 

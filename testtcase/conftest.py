@@ -40,14 +40,13 @@ def DengLu():
         driver.maximize_window()
         driver.implicitly_wait(10)  # 隐式等待，10秒内页面元素加载完成后立即执行
         # 执行登录操作
-        event.myo_login(driver,ENV.URL, ENV.name, ENV.password)
+        event.myo_login(driver,ENV.URL, ENV.pcno, ENV.password)
         yield driver
     except Exception as e:
         print(f"❌ DengLu fixture 失败：{e}")
-        # driver.save_screenshot("DengLu_fixture_error.png")  # 保存失败截图--不需要了，已经封装好了全局钩子截图到log/image_allure中
         raise
-    finally:
-        driver.quit()
+    # finally:
+    #     driver.quit()
 
 
 # ========== 全局失败截图钩子（可选，注释不影响fixture加载） ==========
