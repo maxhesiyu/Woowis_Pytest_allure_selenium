@@ -16,7 +16,7 @@ def myo_login(driver,url,name,password):
 def ZhuCe(driver,randomPhone,CAPTCHA,referrer,name,npwd,ncpwd,randomSFZ):
     with allure.step("注册PC用户"):
         driver = driver
-        allure.dynamic.title("注册基本流程到个人信息填写")
+        allure.dynamic.title("注册基本流程")
         sel_click(driver, (By.XPATH, "//span[contains(text(),'点击注册(Click To Register)')]"))
         sel_click(driver, (By.XPATH, "//div[contains(text(),'申请优惠顾客')]"))
         allure.dynamic.title("弹窗同意注册提示")

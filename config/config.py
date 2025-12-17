@@ -6,7 +6,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).parent.parent.absolute()
 
 # 路径配置
-TEST_CASE_DIR = PROJECT_ROOT / "testtcase"
+TEST_CASE_DIR = PROJECT_ROOT / "testtcase/test_longin.py"   #需要执行pytest的文件路径
 EXCEL_FILE_PATH = PROJECT_ROOT / "测试登录参数化.xlsx"
 LOG_DIR = PROJECT_ROOT / "log"
 ALLURE_RESULTS = PROJECT_ROOT / "allure-results"
@@ -30,7 +30,7 @@ class ENV:
     phone = "13345238446"  #固定手机号
     randomPhone = f"133{''.join(random.choices('0123456789', k=8))}"   #生成随机手机号
     CAPTCHA = "1065"  #验证码
-    referrer = "00000002"  #注册推荐人
+    referrer = "2"  #注册推荐人
     # 注册个人信息默认数据
     name = "max测试"   #姓名
     npwd = "a1234567"  #密码

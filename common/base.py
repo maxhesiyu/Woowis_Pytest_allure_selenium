@@ -69,9 +69,10 @@ def refresh_when_element_appears(driver, target_locator,core_element_loc, wait_t
         WebDriverWait(driver, 15).until(EC.element_to_be_clickable(core_element_loc))
         return True
 
-    except TimeoutException:
+    except TimeoutException as e:
         # 超时未检测到元素，不刷新
         print(f"超时 {wait_timeout} 秒未检测到元素 {target_locator}，不刷新")
+        log.info(e)
         return False
 
 

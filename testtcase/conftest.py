@@ -1,13 +1,9 @@
 import pytest
 from selenium import webdriver
-from selenium.webdriver.edge.options import Options
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from common.base import attach_failure_screenshot  # 若base.py导入失败，可临时注释截图逻辑
+
+from common.base import attach_failure_screenshot
 from config.config import ENV
 from po import event
-from po.event import myo_login
 
 
 # ========== 核心Fixture：open_page（未登录的浏览器） ==========
