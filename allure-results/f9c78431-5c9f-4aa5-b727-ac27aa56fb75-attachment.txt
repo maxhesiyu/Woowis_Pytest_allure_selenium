@@ -1,2 +1,0 @@
-[[31mERROR] [2025-12-12 17:18:56] : 断言失败：预期包含：测试 | 实际：何思宇 (60003152) | 定位符：('xpath', "//span[contains(text(),'何思宇\xa0(60003152)')]")[0m
-[[32mINFO] [2025-12-12 17:18:57] : 截图保存：D:\pythonProject\Pytest_allure_2\log\image_allure\用例失败_test_shopping_01_20251212171856.png[0m

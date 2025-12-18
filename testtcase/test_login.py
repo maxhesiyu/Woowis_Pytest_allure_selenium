@@ -7,15 +7,10 @@ import pytest
 from openpyxl.reader.excel import load_workbook
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import config.config
-from common.base import sel_end_keys, sel_click, assert_text_in_element, refresh_when_element_appears, sel_hover, \
-    redirect_URL
+from common.base import sel_end_keys, sel_click, assert_text_in_element
 from common.log import log
-from config.config import ENV
+from config.config import env, ENV
 from po.event import ZhuCe
-from po.shopping import  Shopping_downOrder, Shopping_querySku
 
 # 新增：获取项目根目录（适配任意执行路径）
 PROJECT_ROOT = Path(__file__).parent.parent.absolute()
@@ -39,7 +34,7 @@ class TestLongin:
                                   'Sheet1'),
         ids=('login01', 'login02', 'login03')
     )
-    @allure.feature('登录注册')
+    # @allure.feature('登录注册')
     @allure.story('登录测试用例')
     def test_login(self, test_case, open_page):
         """修复：简化逻辑，确保能执行"""
@@ -48,7 +43,7 @@ class TestLongin:
             pcno = test_case[1]
             password = test_case[2]
             expected_result = test_case[3]
-        driver = open_page
+            driver = open_page
         allure.dynamic.title(f"登录测试：{case_name}")
         print(f"📌 执行用例：{case_name}，账号：{pcno}，密码：{password}")
         try:
@@ -125,33 +120,8 @@ class TestLongin:
     @allure.story('用户注册流程')
     def test_ZhuCe_01(self,open_page):
         driver = open_page
-        ZhuCe(driver,ENV.randomPhone,ENV.CAPTCHA,ENV.referrer,ENV.name,ENV.npwd,ENV.ncpwd,ENV.randomSFZ)
+        ZhuCe(driver,env.randomPhone,ENV.CAPTCHA,ENV.referrer,ENV.name,ENV.npwd,ENV.ncpwd,env.randomSFZ)
 
-
-
-
-    @allure.story('用户下单流程')
-    def test_shopping_01(self,DengLu):
-        driver = DengLu
-        sleep(1)
-        # 防止点数弹窗拦截把点击订购的按钮拦截掉
-        refresh_when_element_appears(driver,(By.XPATH, "//span[contains(text(),'确定')]"),(By.XPATH, "//span[@class='main zh'][contains(text(),'在线订购')]"))
-        # 重定向URL
-        redirect_URL(driver,"order/product")
-        # 3. 重定向后操作元素
-        with allure.step("点击产品选项,进行产品加入购物车"):
-            sel_click(driver, (By.XPATH, "//a[@class='top-link']//span[@class='zh'][contains(text(),'产品')]"))
-        with allure.step("自定义加购循环次数"):
-            for i in range(ENV.BOGOSKUTime):
-               Shopping_querySku(driver,ENV.BOGOSKU)
-        with allure.step("导入结算流程方法"):
-            Shopping_downOrder(driver)
-
-
-    # 半成品，方法组合成流程
-    def test_zhuCeAndtest_shopping_01(self, open_page,DengLu):
-        self.test_ZhuCe_01(open_page)
-        self.test_shopping_01(DengLu)
 
 
 

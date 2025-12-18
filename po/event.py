@@ -13,13 +13,14 @@ def myo_login(driver,url,name,password):
     sel_click(driver, (By.XPATH, "//span[contains(text(),'登录(Login)')]"))
 
 
+@allure.dynamic.title("注册PC用户")
 def ZhuCe(driver,randomPhone,CAPTCHA,referrer,name,npwd,ncpwd,randomSFZ):
     with allure.step("注册PC用户"):
         driver = driver
-        allure.dynamic.title("注册基本流程")
+        allure.story("注册基本流程")
         sel_click(driver, (By.XPATH, "//span[contains(text(),'点击注册(Click To Register)')]"))
         sel_click(driver, (By.XPATH, "//div[contains(text(),'申请优惠顾客')]"))
-        allure.dynamic.title("弹窗同意注册提示")
+        allure.story("弹窗同意注册提示")
         # 弹窗同意注册提示
         sel_click(driver, (By.XPATH, "//span[contains(text(),'我理解并同意以下全部内容')]"))
         sel_click(driver, (By.XPATH, "//button[@class='button confirm ivu-btn ivu-btn-primary']"))
@@ -50,7 +51,7 @@ def ZhuCe(driver,randomPhone,CAPTCHA,referrer,name,npwd,ncpwd,randomSFZ):
                      (By.XPATH, "//div[@class='ivu-form-item ivu-form-item-required']//input[@type='password']"),
                      ncpwd)
         allure.dynamic.title("国外身份证填写")
-        sleep(2)
+        sleep(1)
         sel_click(driver, (By.XPATH, "//label[contains(text(),'其它国籍（地区）身份证件')]"))
         sel_end_keys(driver, (By.XPATH,
                               "//div[@class='ivu-form-item']//div[@class='ivu-input-wrapper ivu-input-wrapper-large ivu-input-type']//input[@type='text']"),
@@ -66,7 +67,6 @@ def ZhuCe(driver,randomPhone,CAPTCHA,referrer,name,npwd,ncpwd,randomSFZ):
                 birthdayInputs[0].dispatchEvent(new Event('change'));
             }
         """)
-        allure.dynamic.title("勾选优惠顾客政策并点击申请优惠注册按钮")
         sleep(1)
         sel_click(driver, (By.XPATH, "//a[contains(text(),'优惠顾客政策(Preferential customer policy)')]"))
         sleep(1)

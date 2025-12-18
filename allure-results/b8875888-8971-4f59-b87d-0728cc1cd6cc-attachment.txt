@@ -1,1 +1,0 @@
-INFO     auto_test:test_longin.py:64 ✅ 用例「账号错误」断言通过（顾客编号格式错误场景）

@@ -1,1 +1,0 @@
-INFO     auto_test:test_longin.py:79 ✅ 用例「密码正确」断言通过（登录成功场景）
