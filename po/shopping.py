@@ -14,6 +14,8 @@ def Shopping_product_Order( driver, sku_time, sku,ads,address):
         :param driver: 浏览器驱动
         :param sku_time: SKU时间参数（ENV.SKUTime）
         :param sku: SKU列表（ENV.SKU）
+        :param ads: 布偶值，true执行新增地址操作，false不执行
+        :param address: 新增的地址信息参数
     """
     with allure.step("点击产品选项,进行产品加入购物车"):
         sel_click(driver, (By.XPATH, "//a[@class='top-link']//span[@class='zh'][contains(text(),'产品')]"))
@@ -37,6 +39,7 @@ def Shopping_querySku(driver, sku):
 @allure.story('结算购物车产品')
 def Shopping_downOrder(driver,ads,address):
     with allure.step("鼠标悬停在购物车元素上（不点击）"):
+        sleep(1)
         sel_hover(driver, (By.XPATH, "//a[@class='item']//span[@class='zh'][contains(text(),'购物车')]"))
         sleep(1)  # 防止结算按钮出不来
     with allure.step("点击购物车的去结算按钮）"):
@@ -46,11 +49,13 @@ def Shopping_downOrder(driver,ads,address):
         if ads:
             sel_click(driver, (By.XPATH, "//span[contains(text(),'放弃机会(Give up)')]"))
             sel_click(driver, (By.XPATH, "//span[contains(text(),'添加收货地址(Add address)')]"))
+            allure.story("添加地址")
             Shopping_address_Recognize(driver,address)
             sleep(0.3)
             sel_click(driver, (By.XPATH, "//span[contains(text(),'进行结账')]"))
             sel_click(driver, (By.XPATH, "//span[contains(text(),'放弃机会(Give up)')]"))
         sel_click(driver, (By.XPATH, "//span[contains(text(),'提交订单')]"))
+        sleep(1)
         sel_click(driver, (By.XPATH, "//span[contains(text(),'去支付')]"))
 
 
@@ -73,8 +78,9 @@ def Shopping_address_ManOpen(driver,addressName,address):
 def Shopping_address_Recognize(driver,address):
     sel_end_keys(driver,(By.XPATH, "//input[@placeholder='粘贴地址信息，自动拆分姓名、电话和地址']"),address)
     sel_click(driver,(By.XPATH, "//span[contains(text(),'识别')]"))
+    sleep(6)
     getName = get_text(driver,(By.XPATH, "//input[@placeholder='你的名字(Your Name)']"))
-    sleep(4)
     if getName == "":
-        sleep(6)
+        sleep(4)
     sel_click(driver, (By.XPATH, "//span[contains(text(),'确认(Confirm)')]"))
+    sleep(2)

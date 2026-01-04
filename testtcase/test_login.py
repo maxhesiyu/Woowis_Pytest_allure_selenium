@@ -108,7 +108,7 @@ class TestLongin:
             raise  # 重新抛出异常，让pytest标记用例失败
 
 
-    @allure.story('用户登录')
+    @allure.title('用户登录')
     def test_login_01(self, DengLu):
         """修复：简化断言，确保能执行"""
         with allure.step("断言结果故意错误"):
@@ -117,10 +117,12 @@ class TestLongin:
             assert_text_in_element(driver,
                                    (By.XPATH, f"//span[contains(text(),'何思宇 ({ENV.pcno})')]"),"测试")
 
-    @allure.story('用户注册流程')
+    @allure.title('用户注册流程')
     def test_ZhuCe_01(self,open_page):
-        driver = open_page
-        ZhuCe(driver,env.randomPhone,ENV.CAPTCHA,ENV.referrer,ENV.name,ENV.npwd,ENV.ncpwd,env.randomSFZ)
+        with allure.step("用户注册流程"):
+            driver = open_page
+            allure.dynamic.title("用户注册流程")
+            ZhuCe(driver,env.randomPhone,ENV.CAPTCHA,ENV.referrer,ENV.name,ENV.npwd,ENV.ncpwd,env.randomSFZ)
 
 
 

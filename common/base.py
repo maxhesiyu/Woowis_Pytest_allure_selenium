@@ -95,7 +95,7 @@ def redirect_URL(driver, URL_KEY, timeout=10):
     # 1. 点击元素触发重定向/新标签页
     sel_click(driver, (By.XPATH, "//span[@class='main zh'][contains(text(),'在线订购')]"))
     # 2. 分情况处理重定向
-    allure.dynamic.title("重定向页面")
+    allure.story("重定向页面")
     if len(driver.window_handles) > 1:
         # 情况1：重定向到新标签页（你的场景）
         WebDriverWait(driver, timeout).until(lambda d: len(d.window_handles) > 1)
