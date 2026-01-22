@@ -83,4 +83,4 @@ def Shopping_address_Recognize(driver,address):
     if getName == "":
         sleep(4)
     sel_click(driver, (By.XPATH, "//span[contains(text(),'确认(Confirm)')]"))
-    sleep(2)
+    sleep(0.3)
