@@ -5,7 +5,7 @@ from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, ElementNotInteractableException
 from common.log import log
 from config.config import ALLURE_IMG_DIR
 
@@ -51,8 +51,53 @@ def get_text(driver, locator, timeout=10):
         log.error(f"获取文本失败：{locator} → {e}")
         return ""
 
+
+@allure.step("检查页面是否存在指定文本")
+def check_text_exists(driver, target_text, timeout=3):
+    """
+    检查页面是否存在指定文本（等待文本加载完成，避免漏判）
+    :param driver: 浏览器驱动
+    :param target_text: 要查找的文本（字符串）
+    :param timeout: 最大等待时间（秒），默认3秒
+    :return: 布尔值（True=存在，False=不存在）
+    """
+    try:
+        # 显式等待：确保页面加载完成后再检查（避免文本未渲染）
+        WebDriverWait(driver, timeout).until(
+            lambda d: target_text in d.page_source
+        )
+        print(f"✅ 页面中找到文本：{target_text}")
+        return True
+    except TimeoutException:
+        print(f"❌ 等待{timeout}秒后，页面未找到文本：{target_text}")
+        return False
+
+
+@allure.step('指定元素出现则点击，未出现则跳过')
+def click_element_if_exists_with_wait(driver, locator, timeout=1):
+    """
+    等待指定时间，若元素可点击则点击，未找到/不可点击则跳过（兼顾效率和稳定性）
+    :param driver: Selenium的WebDriver实例
+    :param locator:元素定位位置
+    :param timeout: 最大等待时间（秒），默认1秒（平衡速度和稳定性）
+    """
+    try:
+        # 等待元素可点击（核心逻辑，1秒足够覆盖绝大多数弹窗加载）
+        WebDriverWait(driver, timeout).until(
+            EC.element_to_be_clickable(locator)).click()
+    except TimeoutException:
+        # 仅捕获“超时未找到元素”异常（预期内异常）
+        print(f"⏳ 等待{timeout}秒后未找到元素【{locator}】，跳过点击")
+    except ElementNotInteractableException:
+        # 捕获“元素存在但不可点击”异常（针对性处理）
+        print(f"❌ 元素【{locator}】存在但不可点击，跳过点击")
+    except Exception as e:
+        # 捕获其他意外异常，打印具体错误（便于调试）
+        print(f"❌ 操作元素【{locator}】时发生意外错误：{str(e)}，跳过点击")
+        log.info(e)
+
 @allure.step('等待指定元素出现后刷新页面')
-def refresh_when_element_appears(driver, target_locator,core_element_loc, wait_timeout=15, refresh_type="normal"):
+def refresh_when_element_appears(driver, target_locator,core_element_loc, wait_timeout=10, refresh_type="normal"):
     """
     检测到目标元素出现后刷新页面
     :param driver: 浏览器驱动对象
@@ -89,11 +134,11 @@ def refresh_when_element_appears(driver, target_locator,core_element_loc, wait_t
 
 
 @allure.step('重定向页面')
-def redirect_URL(driver, URL_KEY, timeout=10):
+def redirect_URL(driver, URL_KEY, locator, timeout=10):
     original_handle = driver.current_window_handle   #原始窗口的驱动
     TARGET_URL_KEY = URL_KEY  # 重定向后的URL关键词
     # 1. 点击元素触发重定向/新标签页
-    sel_click(driver, (By.XPATH, "//span[@class='main zh'][contains(text(),'在线订购')]"))
+    sel_click(driver,locator)
     # 2. 分情况处理重定向
     allure.story("重定向页面")
     if len(driver.window_handles) > 1:
@@ -106,7 +151,7 @@ def redirect_URL(driver, URL_KEY, timeout=10):
         WebDriverWait(driver, timeout).until(EC.url_contains(TARGET_URL_KEY))
     else:
         # 情况2：同标签页重定向
-        WebDriverWait(driver, 10).until(EC.url_contains(TARGET_URL_KEY))
+        WebDriverWait(driver, timeout).until(EC.url_contains(TARGET_URL_KEY))
 
 
 # ========== 断言封装（修复文本获取错误） ==========

@@ -21,7 +21,7 @@ def test_shopping_01(DengLu):
         refresh_when_element_appears(driver, (By.XPATH, "//span[contains(text(),'确定')]"),
                                  (By.XPATH, "//span[@class='main zh'][contains(text(),'在线订购')]"))
         # 重定向URL
-        redirect_URL(driver, "order/product")
+        redirect_URL(driver, "order/product",(By.XPATH, "//span[@class='main zh'][contains(text(),'在线订购')]"))
         # 3. 重定向后操作元素,调用封装的商品列表页开始到付款流程
         Shopping_product_Order(driver, ENV.SKUTime, ENV.SKU, False, ENV.address)
 

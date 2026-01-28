@@ -31,8 +31,7 @@ class TestLongin:
     @pytest.mark.parametrize(
         "test_case",
         read_test_data_from_excel(str(EXCEL_FILE_PATH),
-                                  'Sheet1'),
-        ids=('login01', 'login02', 'login03')
+                                  'Sheet1')
     )
     # @allure.feature('登录注册')
     @allure.story('登录测试用例')
@@ -115,7 +114,8 @@ class TestLongin:
             driver = DengLu
             allure.dynamic.title("登录后用户名验证")
             assert_text_in_element(driver,
-                                   (By.XPATH, f"//span[contains(text(),'何思宇 ({ENV.pcno})')]"),"测试")
+                                   (By.XPATH, f"//span[contains(text(),'何思宇 ({ENV.pcno})')]"),
+                                   "测试")
 
     @allure.title('用户注册流程')
     def test_ZhuCe_01(self,open_page):
