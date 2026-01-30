@@ -6,7 +6,7 @@ from config.config import ENV
 from po import event
 
 # ========== 全局开关【核心】✅ 想关闭浏览器就改为 False，想保活就改为 True ==========
-KEEP_BROWSER_OPEN = True
+KEEP_BROWSER_OPEN = False
 
 # ========== 核心Fixture：open_page（未登录的浏览器） ==========
 @pytest.fixture(scope='function')

@@ -5,8 +5,6 @@ from selenium.common.exceptions import TimeoutException
 
 from common.base import get_all_visible_text
 from common.log import log
-from config.config import ENV, env
-from po.event import ZhuCe
 from read_excel.read_from_excel import read_test_data_from_excel
 from pathlib import Path
 import pytest
@@ -84,7 +82,7 @@ class TestLogin:
 
                 # 等待页面跳转（URL变化）或登录成功提示出现，超时则跳过
                 try:
-                    WebDriverWait(driver, 2).until(
+                    WebDriverWait(driver, 1).until(
                         lambda d: d.current_url != original_url  # 等待URL变化（跳转）
                     )
                     log.info(f"✅ 页面已跳转，原URL：{original_url}，新URL：{driver.current_url}")
@@ -94,7 +92,6 @@ class TestLogin:
             # ========== 核心：全局文本扫描 + 断言 ==========
             with allure.step("抓取页面所有可见文本（含弹窗）并断言预期结果"):
                 # 抓取全页面文本（包括弹窗）
-
                 all_page_text = get_all_visible_text(driver)
                 # 模糊断言查找
                 assert any(expected_result in text for text in all_page_text), \
@@ -118,20 +115,3 @@ class TestLogin:
                 )
             log.error(f"❌ 用例「{case_name}」执行失败：{str(e)}")
             raise
-
-
-    @allure.title('用户注册流程')
-    def test_ZhuCe_01(self,open_page):
-        with allure.step("用户注册流程"):
-            driver = open_page
-            allure.dynamic.title("用户注册流程")
-            ZhuCe(driver,env.randomPhone,ENV.CAPTCHA,ENV.referrer,ENV.name,ENV.npwd,ENV.ncpwd,env.randomSFZ)
-
-
-
-
-
-
-
-
-

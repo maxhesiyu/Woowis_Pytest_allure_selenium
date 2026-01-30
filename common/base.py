@@ -173,7 +173,67 @@ def assert_text_in_element(driver, locator, target_text, timeout=10):
         log.error(f"断言异常：{e}")
         raise AssertionError(f"断言异常：{e}") from e
 
-# ========== 截图封装（整合原screenshot.py） ==========
+@allure.step('全页面抓取文本/弹窗')
+# ========== 核心：全页面（含iframe/弹窗）文本抓取函数 ==========
+def get_all_visible_text(driver, wait_time=4):
+    """
+    抓取页面所有可见文本（含iframe、弹窗），去重且过滤空值
+    :param driver: 浏览器驱动
+    :param wait_time: 页面加载等待时间
+    :return: 去重后的可见文本集合
+    """
+    # 等待页面完全加载（确保弹窗/iframe渲染完成）
+    WebDriverWait(driver, wait_time).until(
+        lambda d: d.execute_script("return document.readyState === 'complete'")
+    )
+
+    all_text = set()
+
+    # 1. 抓取主页面（非iframe）的文本
+    main_text = _get_text_from_current_context(driver)
+    all_text.update(main_text)
+
+    # 2. 遍历所有iframe，抓取iframe内的文本（覆盖iframe中的弹窗）
+    iframes = driver.find_elements(By.TAG_NAME, "iframe")
+    for iframe in iframes:
+        try:
+            driver.switch_to.frame(iframe)  # 切换到iframe
+            iframe_text = _get_text_from_current_context(driver)
+            all_text.update(iframe_text)
+            driver.switch_to.default_content()  # 切回主页面
+        except Exception as e:
+            log.debug(f"跳过无法访问的iframe：{e}")
+            continue
+
+    log.info(f"✅ 抓取到页面（含iframe/弹窗）可见文本共 {len(all_text)} 条")
+    return all_text
+
+@allure.step('抓取当前上下文的可见文本')
+# 辅助函数：抓取当前上下文（主页面/iframe）的可见文本
+def _get_text_from_current_context(driver):
+    """抓取当前上下文（主页面或iframe）中所有可见元素的文本"""
+    # 定位所有可见元素（排除display:none/visibility:hidden的元素）
+    visible_elems = driver.find_elements(
+        By.XPATH,
+        "//*[not(contains(@style,'display:none')) and not(contains(@style,'visibility:hidden')) and not(@hidden)]"
+    )
+    text_set = set()
+    for elem in visible_elems:
+        try:
+            # 抓取元素的text（普通文本）和value（输入框文本）
+            elem_text = elem.text.strip()
+            if elem_text:
+                text_set.add(elem_text)
+            elem_value = elem.get_attribute("value")
+            if elem_value and elem_value.strip():
+                text_set.add(elem_value.strip())
+        except Exception as e:
+            log.debug(f"跳过无法读取的元素文本：{e}")
+            continue
+    return text_set
+
+
+# ========== 截图封装 ==========
 @allure.step('失败截图并附加到报告')
 def attach_failure_screenshot(driver, name="失败截图"):
     try:
