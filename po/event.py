@@ -4,6 +4,20 @@ from selenium.webdriver.common.by import By
 from common.base import sel_end_keys, sel_click, refresh_when_element_appears
 
 
+
+def Myo_PcNo_Pwd(driver,pcno,password):
+    with allure.step(f"输入顾客编号: {pcno}"):
+        sel_end_keys(driver, (By.XPATH, "//input[@placeholder='顾客编号(PC ID)']"), pcno)
+    with allure.step(f"输入密码: {password}"):
+        sel_end_keys(driver, (By.XPATH, "//input[@placeholder='密码(Password)']"), password)
+
+def Myo_Login_btn(driver):
+    with allure.step("点击登录按钮"):
+        sel_click(driver, (By.XPATH, "//span[contains(text(),'登录(Login)')]"))
+
+
+
+
 def myo_login(driver,url,name,password):
     driver = driver
     driver.get(url)

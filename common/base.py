@@ -20,16 +20,37 @@ def sel_click(driver, locator, timeout=10):
         log.error(f"点击元素失败：{locator} → {e}")
         raise
 
-@allure.step('输入框输入数值')
+
+@allure.step('输入框输入数值（支持空值）')
 def sel_end_keys(driver, locator, value, timeout=10):
+    """
+    优化版输入函数：支持空值输入（None/空字符串），输入框仅清空不输入内容
+    :param driver: 浏览器驱动
+    :param locator: 元素定位器
+    :param value: 要输入的值（支持None/空字符串/数字/普通字符串）
+    :param timeout: 元素等待超时时间
+    """
     try:
+        # 1. 等待元素可点击
         elem = WebDriverWait(driver, timeout).until(EC.element_to_be_clickable(locator))
+        # 2. 先清空输入框（无论是否输入值，先清空）
         elem.clear()
-        elem.send_keys(str(value))  # 强制转字符串，避免数字输入异常
-        time.sleep(0.2)
+        # 3. 核心：处理空值场景
+        # 判定空值：None / 空字符串 / 仅空白字符
+        if value is None or (isinstance(value, str) and value.strip() == ""):
+            log.info(f"输入框[{locator}]传入空值，仅清空不输入内容")
+            # 空值无需send_keys，清空后直接返回
+            return
+
+        # 4. 非空值：强制转为字符串（保留原逻辑，避免数字输入异常）
+        input_value = str(value)
+        elem.send_keys(input_value)
+        log.info(f"输入框[{locator}]成功输入：{input_value}")
+        time.sleep(0.2)  # 短等待，确保输入生效
+
     except Exception as e:
-        log.error(f"输入失败：{locator} → {e}")
-        raise
+        log.error(f"输入框[{locator}]输入失败 → 异常：{e}")
+        raise  # 抛出异常，让用例感知失败
 
 
 @allure.step('鼠标悬停')

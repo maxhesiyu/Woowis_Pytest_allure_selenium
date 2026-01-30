@@ -1,15 +1,13 @@
-import ast
 from pathlib import Path
 from time import sleep
 import pytest
-from openpyxl.reader.excel import load_workbook
 import allure
 from selenium.webdriver.common.by import By
 
 from common.base import sel_end_keys, sel_click, refresh_when_element_appears, redirect_URL, \
-    click_element_if_exists_with_wait, sel_hover, assert_text_in_element, check_text_exists
-from po.shopping import Shopping_product_Order, Shopping_querySku
-from read_excel.read_from_excel import read_test_data_from_excel
+    sel_hover, check_text_exists
+from po.shopping import Shopping_querySku
+from config.read_from_excel import read_test_data_from_excel
 
 # 获取项目根目录（适配任意执行路径）
 PROJECT_ROOT = Path(__file__).parent.parent.absolute()
