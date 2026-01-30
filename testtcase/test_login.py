@@ -1,3 +1,5 @@
+from time import sleep
+
 from openpyxl.reader.excel import load_workbook
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -82,19 +84,22 @@ class TestLogin:
                 original_url = driver.current_url
                 driver.find_element(By.XPATH, "//span[contains(text(),'登录(Login)')]").click()
 
-                # 等待页面跳转（URL变化）或登录成功提示出现，超时则跳过
-                try:
-                    WebDriverWait(driver, 2).until(
-                        lambda d: d.current_url != original_url  # 等待URL变化（跳转）
-                    )
-                    log.info(f"✅ 页面已跳转，原URL：{original_url}，新URL：{driver.current_url}")
-                except TimeoutException:
-                    log.warning(f"⚠️ 登录后页面未跳转，仍停留在：{original_url}")
+            # 判断页面URL是否发生变化，发生变化留出3秒的等待页面渲染时间
+            with allure.step("判断URL是否发生变化"):
+                sleep(1)
+                current_url = driver.current_url
+                if current_url != original_url:
+                    # URL变更 → 延迟3秒，给新页面渲染文本
+                    log.info(f"✅ URL已变更：{original_url} → {current_url}，延迟3秒等待渲染")
+                    sleep(3)
+                else:
+                    # URL未变更 → 立即执行判断，不延迟
+                    log.warning(f"⚠️ URL未变更，仍停留在：{original_url}，立即执行判断")
+
 
             # ========== 核心：全局文本扫描 + 断言 ==========
             with allure.step("抓取页面所有可见文本（含弹窗）并断言预期结果"):
                 # 抓取全页面文本（包括弹窗）
-
                 all_page_text = get_all_visible_text(driver)
                 # 模糊断言查找
                 assert any(expected_result in text for text in all_page_text), \
