@@ -118,7 +118,7 @@ def click_element_if_exists_with_wait(driver, locator, timeout=1):
         log.info(e)
 
 @allure.step('等待指定元素出现后刷新页面')
-def refresh_when_element_appears(driver, target_locator,core_element_loc, wait_timeout=10, refresh_type="normal"):
+def refresh_when_element_appears(driver, target_locator,core_element_loc, wait_timeout=5, refresh_type="normal"):
     """
     检测到目标元素出现后刷新页面
     :param driver: 浏览器驱动对象
@@ -155,7 +155,7 @@ def refresh_when_element_appears(driver, target_locator,core_element_loc, wait_t
 
 
 @allure.step('重定向页面')
-def redirect_URL(driver, URL_KEY, locator, timeout=10):
+def redirect_URL(driver, URL_KEY, locator, timeout=5):
     original_handle = driver.current_window_handle   #原始窗口的驱动
     TARGET_URL_KEY = URL_KEY  # 重定向后的URL关键词
     # 1. 点击元素触发重定向/新标签页

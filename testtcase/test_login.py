@@ -12,20 +12,21 @@ import allure
 class TestLogin:
 
     @allure.story('登录测试（全局文本断言')
-    def test_login(self, open_page,merged_login_fixture):
-        # 从合并后的Fixture中解析所有数据（一步到位）
+    def test_login(self, open_page, merged_login_fixture):
+        """登录用例：复用合并后的Fixture，1套登录数据对应1套账号密码"""
+        # 从合并后的Fixture中一键读取所有数据（无需分开解析）
         case_name = merged_login_fixture["case_name"]
         expected_result = merged_login_fixture["expected_result"]
         pcno = merged_login_fixture["pcno"]
         password = merged_login_fixture["password"]
         driver = open_page
 
-        allure.dynamic.title(f"登录测试：{case_name}")
-        log.info(f"📌 执行用例：{case_name}，预期结果：{expected_result}")
+        allure.dynamic.title(f"用例名：{case_name}（账号：{pcno}）")
+        log.info(f"📌 执行用例：{case_name}，账号：{pcno}，预期结果：{expected_result}")
 
         try:
             # 步骤1：输入账号密码
-            with allure.step(f"输入顾客编号: {pcno}"):
+            with allure.step(f"输入顾客编号及密码: {pcno}--{password}"):
                 Myo_PcNo_Pwd(driver,pcno,password)
 
             # 步骤2：点击登录 + 等待页面跳转（核心优化）
@@ -37,13 +38,13 @@ class TestLogin:
 
             # 判断页面URL是否发生变化，发生变化留出3秒的等待页面渲染时间
             with allure.step("判断URL是否发生变化"):
-                sleep(1)
+                sleep(0.5)
                 # 记录登录后的URL
                 current_url = driver.current_url
                 if current_url != original_url:
                     # URL变更 → 延迟3秒，给新页面渲染文本
-                    log.info(f"✅ URL已变更：{original_url} → {current_url}，延迟3秒等待渲染")
-                    sleep(3)
+                    log.info(f"✅ URL已变更：{original_url} → {current_url}，延迟2秒等待渲染")
+                    sleep(2)
                 else:
                     # URL未变更 → 立即执行判断，不延迟
                     log.warning(f"⚠️ URL未变更，仍停留在：{original_url}，立即执行判断")
@@ -75,12 +76,6 @@ class TestLogin:
             raise
 
 
-    @allure.title('用户注册流程')
-    def test_ZhuCe_01(self,open_page):
-        with allure.step("用户注册流程"):
-            driver = open_page
-            allure.dynamic.title("用户注册流程")
-            ZhuCe(driver,env.randomPhone,ENV.CAPTCHA,ENV.referrer,ENV.name,ENV.npwd,ENV.ncpwd,env.randomSFZ)
 
 
 

@@ -51,7 +51,7 @@ def read_test_data_from_excel(
             # 替换SKU列为解析后的列表
             row_parsed[sku_col_index] = sku_list
 
-        # 转回元组（保持不可变，符合原有逻辑）
+        # 转回元组
         data.append(tuple(row_parsed))
 
     workbook.close()  # 关闭工作簿，释放资源

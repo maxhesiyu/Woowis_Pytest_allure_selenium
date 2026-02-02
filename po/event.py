@@ -1,8 +1,7 @@
 from time import sleep
 import allure
 from selenium.webdriver.common.by import By
-from common.base import sel_end_keys, sel_click, refresh_when_element_appears
-
+from common.base import refresh_when_element_appears, sel_end_keys, sel_click
 
 
 def Myo_PcNo_Pwd(driver,pcno,password):
