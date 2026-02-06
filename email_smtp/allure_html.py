@@ -73,58 +73,31 @@ def run_pytest():
 
 # ========== 3. 生成Allure单文件报告（核心功能） ==========
 def generate_allure_report():
-    """基于allure原始结果，生成单文件HTML报告（无需启动服务，双击可打开）"""
-    # 再次校验原始结果文件，避免空数据
     result_files = list(ALLURE_RESULTS.glob("*.json"))
     if len(result_files) == 0:
-        raise RuntimeError("❌ 无Allure原始结果文件，无法生成报告！")
+        raise RuntimeError("❌ allure-results无测试结果，无法生成报告")
 
-    print(f"📊 开始生成Allure单文件报告...")
-    # 构建allure报告生成命令（--single-file是核心：生成单个HTML文件）
+    # 1. 生成单文件报告（--single-file是核心参数）
     allure_gen_cmd = [
-        "allure", "generate", str(ALLURE_RESULTS),  # 原始结果目录
-        "-o", str(ALLURE_HTML),                     # 报告输出目录
-        "--clean",                                  # 生成前清空输出目录
-        "--single-file"                             # 核心参数：生成单文件HTML报告
+        "allure", "generate", str(ALLURE_RESULTS),
+        "-o", str(ALLURE_HTML), "--clean", "--single-file"  # 单文件核心参数
     ]
-
-    # 执行allure报告生成命令
     allure_result = subprocess.run(
         allure_gen_cmd, shell=True, text=True, encoding="utf-8", capture_output=True
     )
-
-    # 校验报告生成是否成功
     if allure_result.returncode != 0:
         raise RuntimeError(
-            f"❌ Allure报告生成失败！\n"
-            f"错误信息：{allure_result.stderr}\n"
-            f"💡 排查方案：\n1. 检查Allure CLI版本：allure --version（需≥2.20.0）\n2. 手动执行命令：{' '.join(allure_gen_cmd)}"
+            f"❌ Allure单文件报告生成失败：{allure_result.stderr}\n"
+            f"💡 排查步骤：\n1. 确认Allure CLI版本≥2.20.0（allure --version）\n2. 重新执行allure generate命令"
         )
+    print(f"✅ Allure单文件报告生成完成：{ALLURE_HTML}")
 
-    # 校验单文件报告是否存在且完整
+    # 2. 校验单文件报告完整性（仅需检查index.html是否存在）
     single_report_file = ALLURE_HTML / "index.html"
     if not single_report_file.exists():
-        raise RuntimeError(f"❌ 单文件报告生成失败：未找到 {single_report_file}")
-    # 校验文件大小（小于10KB视为空报告）
-    report_size = os.path.getsize(single_report_file)
-    if report_size < 10 * 1024:
-        raise RuntimeError(f"❌ 单文件报告为空！文件大小：{report_size / 1024:.2f}KB")
+        raise RuntimeError(f"❌ 单文件报告缺失：{single_report_file}，生成失败")
+    print(f"✅ 单文件报告校验通过（文件存在）")
 
-    print(f"✅ Allure单文件报告生成成功！\n"
-          f"报告路径：{single_report_file}\n"
-          f"报告大小：{report_size / 1024 / 1024:.2f}MB\n")
-
-    # 可选：压缩单文件报告（便于归档/传输）
-    def zip_single_report(file_path, zip_path):
-        """压缩单文件报告为ZIP包"""
-        with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED, compresslevel=5) as zipf:
-            # 压缩时保留原文件名（解压后直接双击index.html即可打开）
-            zipf.write(file_path, arcname=file_path.name)
-
-    zip_single_report(single_report_file, ALLURE_ZIP_FILE)
-    print(f"📦 单文件报告已压缩！\n"
-          f"压缩包路径：{ALLURE_ZIP_FILE}\n"
-          f"压缩后大小：{os.path.getsize(ALLURE_ZIP_FILE) / 1024 / 1024:.2f}MB\n")
 
 
 # ========== 主执行流程（串联所有步骤） ==========

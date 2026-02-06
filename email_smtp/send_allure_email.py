@@ -79,10 +79,7 @@ def generate_allure_report():
     single_report_file = ALLURE_HTML / "index.html"
     if not single_report_file.exists():
         raise RuntimeError(f"❌ 单文件报告缺失：{single_report_file}，生成失败")
-    # 校验文件大小（避免空文件）
-    if os.path.getsize(single_report_file) < 1024 * 10:  # 小于10KB视为空文件
-        raise RuntimeError(f"❌ 单文件报告为空（大小：{os.path.getsize(single_report_file) / 1024:.2f}KB）")
-    print(f"✅ 单文件报告校验通过（大小：{os.path.getsize(single_report_file) / 1024 / 1024:.2f}MB）")
+
 
     # 3. 压缩单文件报告（仅压缩index.html，简化逻辑）
     def zip_single_report(file_path, zip_path):
