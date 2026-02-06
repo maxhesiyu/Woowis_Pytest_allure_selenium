@@ -91,7 +91,7 @@ def get_merged_business_with_pwd_data(
     :param business_sheet_name: 业务表格sheet名（如"促销"）
     :param parse_sku: 是否解析SKU（传给read_test_data_from_excel）
     :param sku_col_index: SKU列索引（传给read_test_data_from_excel）
-    :param business_data_mapper: 业务数据映射函数，入参(业务行, 账号密码行)，返回合并后的字典
+    :param business_data_mapper: 业务数据映射函数，入参(业务行, 账号密码行, 行索引)，返回合并后的字典
     :return: 合并后的数据列表
     """
     # 1. 读取业务数据
@@ -119,35 +119,50 @@ def get_merged_business_with_pwd_data(
     truncated_business = valid_business_data[:min_row_count]
     truncated_pwd = valid_pwd_data[:min_row_count]
 
-    # 5. 合并数据（通过映射函数适配不同业务字段）
+    # 5. 合并数据（【修改点1】：新增index参数，传给映射函数生成唯一标识）
     merged_data = []
-    for business_case, pwd_info in zip(truncated_business, truncated_pwd):
-        merged_data.append(business_data_mapper(business_case, pwd_info))
+    for index, (business_case, pwd_info) in enumerate(zip(truncated_business, truncated_pwd)):
+        # 映射函数新增index参数，用于生成唯一ID
+        merged_case = business_data_mapper(business_case, pwd_info, index)
+        merged_data.append(merged_case)
 
     logger.info(f"【{business_excel_name}】最终合并有效行数：{len(merged_data)}")
     return merged_data
 
 
 # ===================== 业务专属映射函数（仅需定义字段映射） =====================
-def free_gift_data_mapper(business_case, pwd_info):
-    """促销赠品业务：字段映射规则"""
+def free_gift_data_mapper(business_case, pwd_info, index):
+    """
+    促销赠品业务：字段映射规则
+    【修改点2】：新增index参数，生成唯一case_id（源头区分用例）
+    """
+    # 生成唯一case_id：业务类型+索引+用例名+账号（确保绝对唯一）
+    unique_case_id = f"free_gift_{index}_{business_case[0]}_{pwd_info['pcno']}"
     return {
+        "case_id": unique_case_id,  # 新增：唯一用例ID（核心修复点）
         "case_name": business_case[0],
         "skuTime": business_case[1],
         "sku_list": business_case[2],
         "expected_result": business_case[3],
         "pcno": pwd_info["pcno"],
-        "password": pwd_info["password"]
+        "password": pwd_info["password"],
+        "index": index  # 备用：行索引
     }
 
 
-def login_data_mapper(business_case, pwd_info):
-    """登录业务：字段映射规则"""
+def login_data_mapper(business_case, pwd_info, index):
+    """
+    登录业务：字段映射规则
+    【修改点3】：新增index参数，生成唯一case_id
+    """
+    unique_case_id = f"login_{index}_{business_case[0]}_{pwd_info['pcno']}"
     return {
+        "case_id": unique_case_id,  # 新增：唯一用例ID
         "case_name": business_case[0],  # 登录用例名
         "expected_result": business_case[1],  # 登录预期结果
         "pcno": pwd_info["pcno"],  # 匹配的账号
-        "password": pwd_info["password"]  # 匹配的密码
+        "password": pwd_info["password"],  # 匹配的密码
+        "index": index  # 备用：行索引
     }
 
 
@@ -181,13 +196,23 @@ def pcno_pwd_fixture(request):
     return request.param
 
 
-@pytest.fixture(params=get_merged_free_gift_data())
+# 【修改点4】：先获取数据，再为Fixture指定唯一ids（核心修复Allure合并问题）
+free_gift_data = get_merged_free_gift_data()  # 提前获取合并后的促销数据
+@pytest.fixture(
+    params=free_gift_data,
+    ids=[case["case_id"] for case in free_gift_data]  # 基于唯一case_id生成ids
+)
 def merged_free_gift_fixture(request):
     """促销用例Fixture：1套促销数据 ↔ 1套账号密码"""
     return request.param
 
 
-@pytest.fixture(params=get_merged_login_data())
+# 【修改点5】：登录Fixture同理，添加唯一ids
+login_data = get_merged_login_data()  # 提前获取合并后的登录数据
+@pytest.fixture(
+    params=login_data,
+    ids=[case["case_id"] for case in login_data]  # 基于唯一case_id生成ids
+)
 def merged_login_fixture(request):
     """登录用例Fixture：1套登录数据 ↔ 1套账号密码"""
     return request.param

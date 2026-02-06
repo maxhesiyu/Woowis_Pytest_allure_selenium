@@ -1,4 +1,6 @@
 from time import sleep
+from urllib import request
+
 import pytest
 import allure
 from selenium.webdriver.common.by import By
@@ -17,6 +19,8 @@ class TestFreeGift:
     # 仅接收合并后的 fixture
     def test_shopping_FreeGift(self, open_page, merged_free_gift_fixture):
         with allure.step('获取合并后的测试数据（促销+账号密码）'):
+            # 从fixture中获取唯一case_id和其他数据
+            case_id = merged_free_gift_fixture["case_id"]
             case_name = merged_free_gift_fixture["case_name"]
             skuTime = merged_free_gift_fixture["skuTime"]
             sku_list = merged_free_gift_fixture["sku_list"]
@@ -25,9 +29,10 @@ class TestFreeGift:
             password = merged_free_gift_fixture["password"]
             driver = open_page
 
-        allure.dynamic.title(f"测试：{case_name}")
+            # 【关键】使用唯一case_id设置Allure动态标题，彻底避免重复
+            allure.dynamic.title(f"{case_name}：{case_id}")
 
-        # 核心：调用通用登录校验函数（复用登录用例的判断逻辑）
+        # 调用通用登录校验函数（复用登录用例的判断逻辑）
         with allure.step(f"登录并校验账号密码：{pcno}--{password}"):
             try:
                 # 调用通用登录函数，登录失败会直接抛出异常，终止用例
