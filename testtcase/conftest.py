@@ -137,7 +137,7 @@ def free_gift_data_mapper(business_case, pwd_info, index):
     【修改点2】：新增index参数，生成唯一case_id（源头区分用例）
     """
     # 生成唯一case_id：业务类型+索引+用例名+账号（确保绝对唯一）
-    unique_case_id = f"free_gift_{index}_{business_case[0]}_{pwd_info['pcno']}"
+    unique_case_id = f"{index}_{pwd_info['pcno']}"
     return {
         "case_id": unique_case_id,  # 新增：唯一用例ID（核心修复点）
         "case_name": business_case[0],
@@ -155,7 +155,7 @@ def login_data_mapper(business_case, pwd_info, index):
     登录业务：字段映射规则
     【修改点3】：新增index参数，生成唯一case_id
     """
-    unique_case_id = f"login_{index}_{business_case[0]}_{pwd_info['pcno']}"
+    unique_case_id = f"{index}_{pwd_info['pcno']}"
     return {
         "case_id": unique_case_id,  # 新增：唯一用例ID
         "case_name": business_case[0],  # 登录用例名
