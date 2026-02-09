@@ -7,7 +7,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).parent.parent.absolute()
 
 # 路径配置
-TEST_CASE_DIR = PROJECT_ROOT / "testtcase/test_shopping_FreeGift.py"   #需要执行pytest的文件路径
+TEST_CASE_DIR = PROJECT_ROOT / "API/api_testcase/login.py"   #需要执行pytest的文件路径
 # EXCEL_FILE_PATH = PROJECT_ROOT / "测试登录参数化.xlsx"
 LOG_DIR = PROJECT_ROOT / "log"
 ALLURE_RESULTS = PROJECT_ROOT / "allure-results"

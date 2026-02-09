@@ -8,7 +8,7 @@ def get_project_root():
     """获取项目根目录（Pytest_allure_2）"""
     # 此文件路径：config/path_config.py → 上一级是config → 再上一级是项目根目录
     current_file = Path(__file__).absolute()
-    project_root = current_file.parent.parent  # 调整.parent次数匹配你的目录结构
+    project_root = current_file.parent.parent  # 调整.parent次数匹配目录结构
     return project_root
 
 """获取Excel文件夹路径（项目根目录/Excel），自动创建文件夹"""
