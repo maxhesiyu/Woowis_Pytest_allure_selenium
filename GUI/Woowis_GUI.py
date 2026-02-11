@@ -96,7 +96,7 @@ class TestRunnerThread(QThread):
             self.finish_signal.emit(False, error_msg)
 
 # ========== 主GUI窗口 ==========
-class TestRunnerWindow(QMainWindow):
+class RunnerWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.init_ui()
@@ -227,6 +227,6 @@ if __name__ == "__main__":
 
     # PyQt6应用初始化
     app = QApplication(sys.argv)
-    window = TestRunnerWindow()
+    window = RunnerWindow()
     window.show()
     sys.exit(app.exec())
