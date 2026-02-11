@@ -13,7 +13,7 @@ class TestLogin:
     @pytest.mark.parametrize(
         "case",
         read_test_data_from_excel(
-            file_path=str(get_excel_file_path("接口登录参数化.xlsx")),
+            file_path=str(get_excel_file_path("Excel_API/接口登录参数化.xlsx")),
             sheet_name="Sheet2",
             parse_sku=False,
             sku_col_index=0
