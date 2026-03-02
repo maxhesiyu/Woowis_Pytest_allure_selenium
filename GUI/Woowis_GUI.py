@@ -105,7 +105,7 @@ class RunnerWindow(QMainWindow):
 
     def init_ui(self):
         # 窗口基础设置
-        self.setWindowTitle("自动化测试执行器（Python3.13+PyQt6）")
+        self.setWindowTitle("多特瑞自动化测试执行器")
         self.setMinimumSize(800, 600)
         self.setFont(QFont("Microsoft YaHei", 9))
 
@@ -190,7 +190,7 @@ class RunnerWindow(QMainWindow):
         gui_handler = GuiLogHandler(self.log_text)
         log.addHandler(gui_handler)
         # 输出初始化日志
-        log.info("📌 自动化测试执行器已初始化完成")
+        log.info("📌 多特瑞自动化测试已初始化完成")
         log.info(f"🔧 项目根目录：{PROJECT_ROOT}")
         log.info(f"🌐 测试环境地址：{ENV.URL}")
         log.info(f"📁 Allure报告目录：{ALLURE_HTML}")
