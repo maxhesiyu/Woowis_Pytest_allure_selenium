@@ -4,7 +4,7 @@ import requests
 import json
 
 from config.path_config import get_excel_file_path
-from config.read_from_excel import read_test_data_from_excel
+from common.read_from_excel import read_test_data_from_excel
 
 
 class TestLogin:

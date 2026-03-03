@@ -17,10 +17,6 @@ sys.path.append(str(PROJECT_ROOT))
 # 导入配置
 from config.config import TEST_CASE_DIR, ALLURE_RESULTS, ALLURE_HTML
 
-# 单文件报告压缩包命名（可选保留，便于归档）
-ALLURE_ZIP_FILE = SCRIPT_DIR / f"Allure测试报告_{time.strftime('%Y%m%d_%H%M%S')}.zip"
-
-
 # ========== 1. 清理历史报告（避免残留影响） ==========
 def clean_old_report():
     """清理历史的allure结果、报告、压缩包"""
@@ -115,8 +111,7 @@ def main():
         status = "✅ 所有用例执行通过" if retcode == 0 else "⚠️  部分用例执行失败/出错"
         print(f"🎉 全流程执行完成！\n{status}\n"
               f"📌 报告文件位置：\n"
-              f"1. 单文件HTML报告：{ALLURE_HTML / 'index.html'}\n"
-              f"2. 压缩包报告：{ALLURE_ZIP_FILE}")
+              f"1. 单文件HTML报告：{ALLURE_HTML / 'index.html'}\n")
 
     except Exception as e:
         print(f"\n❌ 执行失败：{str(e)}")

@@ -2,13 +2,13 @@ import allure
 import pytest
 import requests
 import json
-from typing import Dict, Any, Tuple, List
+from typing import Tuple, List
 from urllib.parse import urlencode
 
 from API.api_common.api_base import TestLogin
 from common.log import log
 from config.path_config import get_excel_file_path
-from config.read_from_excel import read_test_data_from_excel
+from common.read_from_excel import read_test_data_from_excel
 
 
 class TestOrder:
