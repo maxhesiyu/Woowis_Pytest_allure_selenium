@@ -1,124 +1,74 @@
-import os
 import sys
-import shutil
 import subprocess
-import zipfile
-import time
 from pathlib import Path
-from textwrap import dedent
 
-# ========== 核心路径配置（移除邮件相关路径） ==========
-# 获取当前脚本所在目录
-SCRIPT_DIR = Path(__file__).absolute().parent
-# 项目根目录（当前脚本的上级目录）
-PROJECT_ROOT = SCRIPT_DIR.parent
-sys.path.append(str(PROJECT_ROOT))
+# 配置抽离到config.py
+from config.config import ALLURE_RESULTS, ALLURE_HTML
 
-# 导入配置
-from config.config import TEST_CASE_DIR, ALLURE_RESULTS, ALLURE_HTML
-
-# ========== 1. 清理历史报告（避免残留影响） ==========
-def clean_old_report():
-    """清理历史的allure结果、报告、压缩包"""
-    # 清理allure结果和报告目录
-    for dir_path in [ALLURE_RESULTS, ALLURE_HTML]:
-        if dir_path.exists():
-            shutil.rmtree(dir_path, ignore_errors=True)
-            print(f"🗑️  已清理历史目录：{dir_path}")
-    # 清理旧的报告压缩包
-    for zip_file in SCRIPT_DIR.glob("Allure测试报告_*.zip"):
-        zip_file.unlink(missing_ok=True)
-    print("✅ 历史报告清理完成\n")
-
-
-# ========== 2. 执行pytest用例（生成allure原始结果） ==========
-def run_pytest():
-    """执行pytest用例，生成allure-results原始数据"""
-    # 拼接pytest执行路径（虚拟环境中的pytest）
-    pytest_exe = str(PROJECT_ROOT / ".venv" / "Scripts" / "pytest.exe")
-    # 构建pytest执行命令
-    pytest_cmd = [
-        pytest_exe, str(TEST_CASE_DIR), "-v",  # 执行指定目录的用例，显示详细日志
-        "--alluredir", str(ALLURE_RESULTS),    # 生成allure原始结果的目录
-        "--clean-alluredir"                    # 每次执行前清空allure-results
-    ]
-    print(f"📝 开始执行pytest用例，命令：{' '.join(pytest_cmd)}")
-
-    # 执行pytest命令
-    result = subprocess.run(
-        pytest_cmd, shell=False, text=True, encoding="utf-8", check=False
-    )
-
-    # 确保allure-results目录存在，并校验结果文件
-    ALLURE_RESULTS.mkdir(parents=True, exist_ok=True)
-    result_files = list(ALLURE_RESULTS.glob("*.json"))  # allure结果文件为json格式
-
-    # 校验：如果没有生成结果文件，说明用例执行失败
-    if len(result_files) == 0:
-        raise RuntimeError(
-            f"❌ pytest执行失败：allure-results目录无测试结果文件！\n"
-            f"返回码：{result.returncode}\n"
-            f"💡 排查方案：\n1. 检查虚拟环境：.venv\\Scripts\\activate\n2. 安装依赖：pip install allure-pytest==2.20.0\n3. 确认测试用例路径正确：{TEST_CASE_DIR}"
-        )
-
-    print(f"✅ pytest用例执行完成！\n"
-          f"返回码：{result.returncode}（0=全部通过，非0=有失败/错误）\n"
-          f"生成Allure原始结果文件数：{len(result_files)}个\n")
-    return result.returncode
-
-
-# ========== 3. 生成Allure单文件报告（核心功能） ==========
-def generate_allure_report():
-    result_files = list(ALLURE_RESULTS.glob("*.json"))
-    if len(result_files) == 0:
-        raise RuntimeError("❌ allure-results无测试结果，无法生成报告")
-
-    # 1. 生成单文件报告（--single-file是核心参数）
-    allure_gen_cmd = [
-        "allure", "generate", str(ALLURE_RESULTS),
-        "-o", str(ALLURE_HTML), "--clean", "--single-file"  # 单文件核心参数
-    ]
-    allure_result = subprocess.run(
-        allure_gen_cmd, shell=True, text=True, encoding="utf-8", capture_output=True
-    )
-    if allure_result.returncode != 0:
-        raise RuntimeError(
-            f"❌ Allure单文件报告生成失败：{allure_result.stderr}\n"
-            f"💡 排查步骤：\n1. 确认Allure CLI版本≥2.20.0（allure --version）\n2. 重新执行allure generate命令"
-        )
-    print(f"✅ Allure单文件报告生成完成：{ALLURE_HTML}")
-
-    # 2. 校验单文件报告完整性（仅需检查index.html是否存在）
-    single_report_file = ALLURE_HTML / "index.html"
-    if not single_report_file.exists():
-        raise RuntimeError(f"❌ 单文件报告缺失：{single_report_file}，生成失败")
-    print(f"✅ 单文件报告校验通过（文件存在）")
-
-
-
-# ========== 主执行流程（串联所有步骤） ==========
-def main():
-    """主流程：清理历史 → 执行用例 → 生成报告"""
+def check_allure_installed():
+    """检查Allure CLI是否安装并配置"""
     try:
-        # 步骤1：清理历史报告
-        clean_old_report()
-        # 步骤2：执行pytest用例
-        retcode = run_pytest()
-        # 步骤3：生成Allure单文件报告
-        generate_allure_report()
+        result = subprocess.run(
+            ["allure", "--version"],
+            shell=True,
+            text=True,
+            encoding="utf-8",
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE
+        )
+        if result.returncode == 0:
+            print(f"✅ Allure CLI已安装，版本：{result.stdout.strip()}")
+            return True
+        else:
+            print(f"❌ Allure CLI未安装或配置错误：{result.stderr}")
+            return False
+    except FileNotFoundError:
+        print("❌ 未找到Allure CLI，请先安装并配置环境变量！")
+        return False
 
-        # 最终结果汇总
-        status = "✅ 所有用例执行通过" if retcode == 0 else "⚠️  部分用例执行失败/出错"
-        print(f"🎉 全流程执行完成！\n{status}\n"
-              f"📌 报告文件位置：\n"
-              f"1. 单文件HTML报告：{ALLURE_HTML / 'index.html'}\n")
+def generate_allure_report(results_dir: Path, html_dir: Path, clean: bool = True) -> Path:
+    """
+    生成Allure HTML单文件报告
+    :param results_dir: allure-results目录路径
+    :param html_dir: allure-html输出目录路径
+    :param clean: 是否清理原有报告
+    :return: 生成的index.html文件路径
+    """
+    # 前置检查
+    if not check_allure_installed():
+        raise RuntimeError("Allure CLI未安装/配置，无法生成报告")
+    if not results_dir.exists():
+        raise RuntimeError(f"❌ allure-results目录不存在：{results_dir}")
+    if len(list(results_dir.glob("*.json"))) == 0:
+        raise RuntimeError(f"❌ allure-results目录为空，无测试结果可生成报告")
 
-    except Exception as e:
-        print(f"\n❌ 执行失败：{str(e)}")
-        # 抛出异常，让脚本返回非0退出码（便于CI/CD判断结果）
-        raise
+    # 构建命令
+    allure_cmd = [
+        "allure", "generate",
+        str(results_dir),
+        "-o", str(html_dir),
+        "--single-file"
+    ]
+    if clean:
+        allure_cmd.append("--clean")
 
+    # 执行生成
+    print(f"📝 生成Allure报告命令：{' '.join(allure_cmd)}")
+    result = subprocess.run(
+        allure_cmd, shell=True, text=True, encoding="utf-8",
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
+    if result.returncode != 0:
+        raise RuntimeError(f"❌ Allure报告生成失败：{result.stderr}")
+
+    # 校验生成结果
+    single_report_file = html_dir / "index.html"
+    if not single_report_file.exists():
+        raise RuntimeError(f"❌ 单文件报告缺失：{single_report_file}")
+    print(f"✅ Allure单文件报告生成完成：{single_report_file}")
+    return single_report_file
 
 if __name__ == "__main__":
-    # 启动主流程
-    main()
+    # 保留命令行执行能力
+    if "--skip-test" in sys.argv:
+        generate_allure_report(ALLURE_RESULTS, ALLURE_HTML)

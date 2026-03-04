@@ -1,3 +1,7 @@
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.parent))  # 项目根目录
+
 from time import sleep
 import pytest
 import allure

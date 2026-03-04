@@ -7,11 +7,16 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).parent.parent.absolute()
 
 # 路径配置
-TEST_CASE_DIR = PROJECT_ROOT / "testcase/test_login.py"   #需要执行pytest的文件路径
+# TEST_CASE_DIR = PROJECT_ROOT / "testcase/test_shopping_FreeGift.py"   #需要执行pytest的文件路径
 LOG_DIR = PROJECT_ROOT / "log"
 ALLURE_RESULTS = PROJECT_ROOT / "allure-results"
 ALLURE_HTML = PROJECT_ROOT / "allure-report"
 ALLURE_IMG_DIR = LOG_DIR / "image_allure"
+# 定义各文件的绝对路径（基于PROJECT_ROOT）
+TEST_LOGIN_PATH = PROJECT_ROOT / "testcase" / "test_login.py"
+TEST_SHOPPING_FreeGift_PATH = PROJECT_ROOT / "testcase" / "test_shopping_freeGift.py"
+ALLURE_HTML_PATH = PROJECT_ROOT / "email_smtp/allure_html.py"
+SEND_EMAIL_PATH = PROJECT_ROOT / "email_smtp/send_allure_email.py"
 
 # 邮箱配置
 EMAIL_CONFIG = {
