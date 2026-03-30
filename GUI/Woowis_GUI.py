@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import ttk, scrolledtext, messagebox
 import subprocess
 import threading
-import os
 import sys
 import logging
 from datetime import datetime
